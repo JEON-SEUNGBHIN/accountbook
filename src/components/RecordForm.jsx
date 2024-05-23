@@ -1,29 +1,68 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 
-const RecordForm = () => {
+const RecordForm = ({ spends, setSpends }) => {
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [content, setContent] = useState("");
 
+  const addSpends = (e) => {
+    e.preventDefault();
+    if (!date || !category || !amount || !content) {
+      alert("항목을 모두 채워주세요!!");
+      return;
+    }
+
+    const recordId = {
+      id: uuidv4(),
+      date,
+      category,
+      amount,
+      content,
+    };
+
+    setSpends([...spends, recordId]);
+
+    setDate("");
+    setCategory("");
+    setAmount("");
+    setContent("");
+  };
+
   return (
-    <StyledForm>
+    <StyledForm onSubmit={addSpends}>
       <StyledFormGroup>
         날짜
-        <StyledInput type="date" />
+        <StyledInput
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)} />
       </StyledFormGroup>
       <StyledFormGroup>
         항목
-        <StyledInput type="text" placeholder="지출 항목" />
+        <StyledInput
+          type="text"
+          placeholder="지출 항목"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}/>
       </StyledFormGroup>
       <StyledFormGroup>
         금액
-        <StyledInput type="text" placeholder="지출 금액" />
+        <StyledInput
+          type="text"
+          placeholder="지출 금액"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}/>
       </StyledFormGroup>
       <StyledFormGroup>
         내용
-        <StyledInput type="text" placeholder="지출 내용" />
+        <StyledInput
+          type="text"
+          placeholder="지출 내용"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}/>
       </StyledFormGroup>
       <StyledBtn type="submit">저장</StyledBtn>
     </StyledForm>
@@ -55,12 +94,12 @@ const StyledInput = styled.input`
 
 const StyledBtn = styled.button`
   width: 5rem;
-  height: 2.5rem;
-  margin-left: 0.5rem;
+  height: 2.3rem;
+  margin-left: 0.8rem;
+  margin-top: 1.2rem;
   color: white;
   background-color: #ff5100;
   border: 1px solid #ff5100;
-  border-radius: 0.5rem;
   cursor: pointer;
 `;
 

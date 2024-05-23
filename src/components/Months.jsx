@@ -44,6 +44,7 @@ const MonthBox = styled.div`
   background-color: #ededed;
   padding: 20px;
   border-radius: 5px;
+  font-weight: bold;
   cursor: pointer; /* 클릭 가능한 커서 설정 */
 `;
 

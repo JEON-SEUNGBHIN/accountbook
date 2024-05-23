@@ -7,7 +7,7 @@ const Total = () => {
   )
 }
 
-const TotalStyl = styled.div`
+const TotalStyle = styled.div`
   
 `
 
