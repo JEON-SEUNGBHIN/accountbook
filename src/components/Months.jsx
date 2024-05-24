@@ -1,26 +1,19 @@
-import React from "react";
 import styled from "styled-components";
 
-const Months = () => {
-  const months = [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ];
+const Months = ({ spends, setSelectedMonth }) => {
+  const handleMonthClick = (month) => {
+    setSelectedMonth(month);
+  };
+
   return (
     <BoxStyle>
-      {months.map((month, index) => (
-        <MonthBox key={index} onClick={() => handleClick(month)}>
-          {month}
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
+        <MonthBox
+          key={month}
+          onClick={() => handleMonthClick(month)}
+          isActive={spends.some((spend) => new Date(spend.date).getMonth() === month - 1)}
+        >
+          {month}월
         </MonthBox>
       ))}
     </BoxStyle>
@@ -45,7 +38,7 @@ const MonthBox = styled.div`
   padding: 20px;
   border-radius: 5px;
   font-weight: bold;
-  cursor: pointer; /* 클릭 가능한 커서 설정 */
+  cursor: pointer; 
 `;
 
 export default Months;
