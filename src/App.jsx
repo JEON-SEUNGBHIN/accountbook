@@ -6,24 +6,22 @@ import RecordForm from "./components/RecordForm";
 import Months from "./components/Months";
 // import Total from "./components/Total";
 import RecordHistory from "./components/RecordHistory";
-import fakeData from "./resources/fakeData.json"
+import fakeData from "./resources/fakeData.json";
 
 function App() {
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const initialMonth = localStorage.getItem('selectedMonth');
+  const [selectedMonth, setSelectedMonth] = useState(initialMonth ? parseInt(initialMonth, 10) : 1);
+
   const [spends, setSpends] = useState(fakeData);
   const [filteredSpends, setFilteredSpends] = useState([]);
 
   useEffect(() => {
-    const initialMonth = localStorage.getItem('selectedMonth');
-    setSelectedMonth(initialMonth);
-  }, []);
+    localStorage.setItem('selectedMonth', selectedMonth.toString());
+  }, [selectedMonth]);
 
   useEffect(() => {
-    localStorage.setItem('selectedMonth', selectedMonth);
-    if (selectedMonth !== null) {
-      const filtered = filterSpendsByMonth(spends, selectedMonth);
-      setFilteredSpends(filtered);
-    }
+    const filtered = filterSpendsByMonth(spends, selectedMonth);
+    setFilteredSpends(filtered);
   }, [selectedMonth, spends]);
 
   const filterSpendsByMonth = (spends, month) => {
@@ -48,7 +46,7 @@ function App() {
         <Total spends={filteredSpends}/>
       </InStBox> */}
       <InStBox>
-        <RecordHistory spends={filteredSpends}/>
+        <RecordHistory spends={filteredSpends} />
       </InStBox>
     </>
   );
