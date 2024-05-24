@@ -4,7 +4,6 @@ import styled from "styled-components";
 import GlobalStyles from "./components/GlobalStyles";
 import RecordForm from "./components/RecordForm";
 import Months from "./components/Months";
-// import Total from "./components/Total";
 import RecordHistory from "./components/RecordHistory";
 import fakeData from "./resources/fakeData.json";
 
@@ -42,9 +41,6 @@ function App() {
       <InStBox>
         <Months spends={spends} setSelectedMonth={setSelectedMonth} selectedMonth={selectedMonth} />
       </InStBox>
-      {/* <InStBox>
-        <Total spends={filteredSpends}/>
-      </InStBox> */}
       <InStBox>
         <RecordHistory spends={filteredSpends} />
       </InStBox>
