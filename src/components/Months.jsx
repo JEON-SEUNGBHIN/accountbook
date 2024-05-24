@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Months = ({ spends, setSelectedMonth }) => {
+const Months = ({ spends, setSelectedMonth, selectedMonth }) => {
   const handleMonthClick = (month) => {
     setSelectedMonth(month);
   };
@@ -11,7 +11,10 @@ const Months = ({ spends, setSelectedMonth }) => {
         <MonthBox
           key={month}
           onClick={() => handleMonthClick(month)}
-          isActive={spends.some((spend) => new Date(spend.date).getMonth() === month - 1)}
+          isActive={spends.some(
+            (spend) => new Date(spend.date).getMonth() === month - 1
+          )}
+          isSelected={month === selectedMonth}
         >
           {month}월
         </MonthBox>
@@ -27,6 +30,14 @@ const BoxStyle = styled.div`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 10px;
+
+  @media (max-width: 1000px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const MonthBox = styled.div`
@@ -34,11 +45,18 @@ const MonthBox = styled.div`
   display: grid;
   justify-content: center;
   align-items: center;
-  background-color: #ededed;
+  background-color: ${({ isSelected }) => (isSelected ? "#fcba77" : "#ededed")};
+  color: ${({ isSelected }) => (isSelected ? "white" : "black")};
   padding: 20px;
   border-radius: 5px;
   font-weight: bold;
-  cursor: pointer; 
+  cursor: pointer;
+
+  &:hover {
+    background-color: #fcba77;
+    color: white;
+
+  }
 `;
 
 export default Months;

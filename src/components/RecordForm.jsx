@@ -19,7 +19,7 @@ const RecordForm = ({ spends, setSpends }) => {
       id: uuidv4(),
       date,
       category,
-      amount,
+      amount: parseFloat(amount),
       content,
     };
 

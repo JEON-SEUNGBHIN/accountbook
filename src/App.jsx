@@ -4,16 +4,36 @@ import styled from "styled-components";
 import GlobalStyles from "./components/GlobalStyles";
 import RecordForm from "./components/RecordForm";
 import Months from "./components/Months";
+// import Total from "./components/Total";
 import RecordHistory from "./components/RecordHistory";
+import fakeData from "./resources/fakeData.json"
 
 function App() {
-  const initialState = JSON.parse(localStorage.getItem('spends')) || [];
-  const [spends, setSpends] = useState(initialState);
   const [selectedMonth, setSelectedMonth] = useState(null);
+  const [spends, setSpends] = useState(fakeData);
+  const [filteredSpends, setFilteredSpends] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem('spends', JSON.stringify(spends));
-  }, [spends]);
+    const initialMonth = localStorage.getItem('selectedMonth');
+    setSelectedMonth(initialMonth);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('selectedMonth', selectedMonth);
+    if (selectedMonth !== null) {
+      const filtered = filterSpendsByMonth(spends, selectedMonth);
+      setFilteredSpends(filtered);
+    }
+  }, [selectedMonth, spends]);
+
+  const filterSpendsByMonth = (spends, month) => {
+    return spends.filter((spend) => {
+      const spendMonth = new Date(spend.date).getMonth() + 1;
+      return spendMonth === parseInt(month);
+    });
+  };
+
+  console.log("Filtered Spends:", filteredSpends); // 배열 확인
 
   return (
     <>
@@ -22,10 +42,13 @@ function App() {
         <RecordForm spends={spends} setSpends={setSpends} />
       </InStBox>
       <InStBox>
-        <Months spends={spends} setSelectedMonth={setSelectedMonth} />
+        <Months spends={spends} setSelectedMonth={setSelectedMonth} selectedMonth={selectedMonth} />
       </InStBox>
+      {/* <InStBox>
+        <Total spends={filteredSpends}/>
+      </InStBox> */}
       <InStBox>
-        <RecordHistory spends={spends} selectedMonth={selectedMonth} />
+        <RecordHistory spends={filteredSpends}/>
       </InStBox>
     </>
   );
