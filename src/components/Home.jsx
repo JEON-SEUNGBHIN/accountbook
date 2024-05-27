@@ -3,7 +3,7 @@ import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import RecordForm from "./RecordForm";
 import Months from "./Months";
-import RecordHistory from "./RecordHistory";
+import List from "./List";
 import fakeData from "../resources/fakeData.json";
 
 const Home = () => {
@@ -31,6 +31,18 @@ const Home = () => {
     });
   };
 
+  const handleUpdateSpend = (updatedSpend) => {
+    const updatedSpends = spends.map((spend) =>
+      spend.id === updatedSpend.id ? updatedSpend : spend
+    );
+    setSpends(updatedSpends);
+  };
+
+  const handleDeleteSpend = (deletedId) => {
+    const updatedSpends = spends.filter((spend) => spend.id !== deletedId);
+    setSpends(updatedSpends);
+  };
+
   return (
     <>
       <GlobalStyles />
@@ -45,7 +57,11 @@ const Home = () => {
         />
       </InStBox>
       <InStBox>
-        <RecordHistory spends={filteredSpends} />
+      <List
+          spends={spends}
+          filteredSpends={filterSpendsByMonth(spends, selectedMonth)}
+          onUpdate={handleUpdateSpend} onDelete={handleDeleteSpend}
+        />
       </InStBox>
     </>
   );

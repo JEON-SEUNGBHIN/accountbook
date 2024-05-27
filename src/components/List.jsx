@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const RecordHistory = ({ spends }) => {
+const List = ({ filteredSpends }) => {
   return (
     <HistoryContainer>
-      {spends.length > 0 ? (
+      {filteredSpends.length > 0 ? (
         <HistoryUl>
-          {spends.map((spend) => (
-            <Link key={spend.id} to={`/update/${spend.id}`}>
+          {filteredSpends.map((spend) => (
+            <StyledLink key={spend.id} to={`/update/${spend.id}`}>
               <HistoryLi>
                 <LeftDiv>
                   <div style={{ color: "#aeaeae" }}>{spend.date}</div>
@@ -22,7 +22,7 @@ const RecordHistory = ({ spends }) => {
                   <div>{spend.amount} 원</div>
                 </RightDiv>
               </HistoryLi>
-            </Link>
+            </StyledLink>
           ))}
         </HistoryUl>
       ) : (
@@ -32,15 +32,18 @@ const RecordHistory = ({ spends }) => {
   );
 };
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`;
+
 const HistoryContainer = styled.div`
   width: 100%;
-  padding: 0.5rem;
 `;
 
 const HistoryUl = styled.ul`
   width: 100%;
   margin: 0 auto;
-  padding: 0;
 `;
 
 const HistoryLi = styled.li`
@@ -49,7 +52,7 @@ const HistoryLi = styled.li`
   color: #ff7700;
   justify-content: space-between;
   border: 1px solid lightgray;
-  margin: 1rem 0;
+  margin: 1rem auto;
   padding: 1rem;
   cursor: pointer;
 `;
@@ -66,15 +69,18 @@ const ContentContainer = styled.div`
 `;
 
 const Content = styled.div`
-  white-space: nowrap;
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const RightDiv = styled.div`
   display: flex;
   align-items: center;
   font-weight: bold;
+  font-size: 1.2rem;
+  margin-left: auto;
 `;
 
 const NoSpends = styled.div`
@@ -84,4 +90,4 @@ const NoSpends = styled.div`
   color: gray;
 `;
 
-export default RecordHistory;
+export default List;
