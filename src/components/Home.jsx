@@ -31,25 +31,24 @@ const Home = () => {
   return (
     <>
       <GlobalStyles />
-      <InStBox>
+      <InStyledBox>
         <RecordForm spends={spends} />
-      </InStBox>
-      <InStBox>
+      </InStyledBox>
+      <InStyledBox>
         <Months
           spends={spends}
           setSelectedMonth={setSelectedMonth}
           selectedMonth={selectedMonth}
         />
-      </InStBox>
-      <InStBox>
-        {/* filteredSpends를 미리 생성하여 List 컴포넌트로 전달 */}
+      </InStyledBox>
+      <InStyledBox>
         <List filteredSpends={filterSpendsByMonth(spends, selectedMonth)}/>
-      </InStBox>
+      </InStyledBox>
     </>
   );
 };
 
-const InStBox = styled.div`
+const InStyledBox = styled.div`
   width: 60%;
   background-color: white;
   margin: 2rem auto;

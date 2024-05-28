@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { SpendsContext } from "../context/SpendsContext";
 
 const Detail = () => {
+  // SpendsContext에서 지출 데이터 및 관련 함수를 가져옴
   const { spends, deleteSpend, editSpend } = useContext(SpendsContext);
   // URL에서 id 매개변수를 가져옴
   const { id } = useParams();
