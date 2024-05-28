@@ -11,13 +11,10 @@ function App() {
   const [spends, setSpends] = useState(fakeData);
 
   const deleteSpend = (id) => {
-    const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
-    if (isConfirmed) {
-      const updatedSpends = spends.filter((spend) => spend.id !== id);
-      setSpends(updatedSpends);
-      alert("삭제되었습니다!");
-      return updatedSpends;
-    }
+    const updatedSpends = spends.filter((spend) => spend.id !== id);
+    setSpends(updatedSpends);
+    alert("삭제되었습니다!");
+    return updatedSpends;
   };
 
   const editSpend = (updatedSpend) => {

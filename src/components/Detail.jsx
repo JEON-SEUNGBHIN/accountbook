@@ -30,8 +30,11 @@ const Detail = ({ spends, onDelete, onEdit }) => {
 
   // 삭제하는 함수
   const handleDelete = () => {
-    onDelete(spend.id);
-    navigate("/");
+    const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
+    if (isConfirmed) {
+      onDelete(spend.id);
+      navigate("/");
+    }
   };
 
   // 수정하는 함수
@@ -44,8 +47,11 @@ const Detail = ({ spends, onDelete, onEdit }) => {
       amount: parseFloat(amountRef.current.value),
       content: contentRef.current.value,
     };
-    onEdit(updatedSpend);
-    navigate("/");
+    const isConfirmed = window.confirm("정말로 수정하시겠습니까?");
+    if (isConfirmed) {
+      onEdit(updatedSpend);
+      navigate("/");
+    }
   };
 
   return (
