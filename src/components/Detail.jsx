@@ -2,16 +2,23 @@ import React, { useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const UpdateForm = ({ spends, setSpends }) => {
+const Detail = ({ spends, setSpends }) => {
+  // URL에서 id 매개변수를 가져옴
   const { id } = useParams();
+
+  // 페이지 이동을 위한 navigate 함수를 가져옴
   const navigate = useNavigate();
+
+  // id에 해당하는 지출 항목을 찾음
   const spend = spends.find((s) => s.id === id);
 
+  // 입력된 값을 참조하기 위한 useRef 훅을 사용
   const dateRef = useRef(null);
   const categoryRef = useRef(null);
   const amountRef = useRef(null);
   const contentRef = useRef(null);
 
+  // 지출 항목이 변경될 때마다 해당 항목의 값을 입력란에 채움
   useEffect(() => {
     if (spend) {
       dateRef.current.value = spend.date;
@@ -21,20 +28,30 @@ const UpdateForm = ({ spends, setSpends }) => {
     }
   }, [spend]);
 
+  // 지출 항목을 삭제하는 함수
   const deleteSpend = (id) => {
     const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
     if (isConfirmed) {
+      // 삭제된 지출 항목을 제외한 새로운 배열을 생성
       const updatedSpends = spends.filter((spend) => spend.id !== id);
+      // 삭제된 항목을 제외한 새로운 배열을 상태에 반영하고, setSpends가 아니라 updatedSpends를 반환
       setSpends(updatedSpends);
-      navigate("/"); // 메인 페이지로 이동
+      // 메인 페이지로 이동
+      navigate("/");
+      // 삭제 완료 메시지를 표시
       alert("삭제되었습니다!");
+      // 함수 완료 후, 새로운 배열을 반환
+      return updatedSpends;
     } else {
-      navigate(-1); // 이전 페이지로 돌아감
+      // 이전 페이지로 돌아감
+      navigate(-1);
     }
   };
 
+  // 지출 항목을 수정하는 함수
   const editSpend = (e) => {
     e.preventDefault();
+    // 수정된 지출 항목을 반영한 새로운 배열을 생성
     const updatedSpends = spends.map((s) =>
       s.id === spend.id
         ? {
@@ -46,11 +63,17 @@ const UpdateForm = ({ spends, setSpends }) => {
           }
         : s
     );
+    // 새로운 배열을 상태에 반영
     setSpends(updatedSpends);
-    navigate("/"); // 수정 후 메인 페이지로 이동
+    // 메인 페이지로 이동
+    navigate("/");
+    alert("수정이 완료되었습니다!!!")
+    // 함수 완료 후, 새로운 배열을 반환
+    return updatedSpends;
   };
 
   return (
+    // 수정 폼을 랜더링
     <UpdateFormStyle onSubmit={editSpend}>
       날짜
       <UpdateInputStyle type="date" ref={dateRef} />
@@ -113,4 +136,4 @@ const UpdateBtnStyleBack = styled(UpdateBtnStyle)`
   background-color: gray;
 `;
 
-export default UpdateForm;
+export default Detail;

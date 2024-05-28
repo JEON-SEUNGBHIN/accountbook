@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
+// 지출 기록을 추가하는 폼을 나타내는 컴포넌트
 const RecordForm = ({ spends, setSpends }) => {
+  // 입력 필드에 대한 상태 관리.
   const [date, setDate] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [content, setContent] = useState("");
 
+  // 지출을 추가하는 함수.
   const addSpends = (e) => {
     e.preventDefault();
     if (!date || !category || !amount || !content) {
@@ -15,16 +18,19 @@ const RecordForm = ({ spends, setSpends }) => {
       return;
     }
 
-    const recordId = {
+    // 새로운 지출 기록을 생성
+    const newSpend = {
       id: uuidv4(),
       date,
       category,
-      amount: parseFloat(amount),
+      amount: parseFloat(amount), // 금액을 숫자형으로 변환
       content,
     };
 
-    setSpends([...spends, recordId]);
+    // 새로운 지출을 목록에 추가
+    setSpends([...spends, newSpend]);
 
+    // 입력 필드 초기화
     setDate("");
     setCategory("");
     setAmount("");
@@ -32,6 +38,7 @@ const RecordForm = ({ spends, setSpends }) => {
 
     alert("성공적으로 등록되었습니다!")
   };
+
 
   return (
     <StyledForm onSubmit={addSpends}>

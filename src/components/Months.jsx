@@ -1,19 +1,25 @@
 import styled from "styled-components";
 
+// 월 선택 컴포넌트
 const Months = ({ spends, setSelectedMonth, selectedMonth }) => {
+  // 월 클릭 이벤트를 처리하는 함수
   const handleMonthClick = (month) => {
     setSelectedMonth(month);
   };
 
   return (
+    // 월 선택 박스 스타일을 적용한 컴포넌트
     <BoxStyle>
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => (
+        // 각 월을 표시하는 컴포넌트
         <MonthBox
           key={month}
           onClick={() => handleMonthClick(month)}
+          // 해당 월에 지출이 있는지 여부에 따라 활성화 여부를 결정
           isActive={spends.some(
             (spend) => new Date(spend.date).getMonth() === month - 1
           )}
+          // 선택된 월인지 여부에 따라 스타일을 변경
           isSelected={month === selectedMonth}
         >
           {month}월
