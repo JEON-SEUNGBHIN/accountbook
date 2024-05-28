@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import RecordForm from "./RecordForm";
 import Months from "./Months";
 import List from "./List";
+import { SpendsContext } from "../context/SpendsContext";
 
 // const[spends, setSpends] => spends: 상태값, setSpends: 해당 상태 값을 변경하는 함수
 
-const Home = ({ spends, setSpends }) => {
-  // 초기 선택된 월을 로컬 스토리지에서 가져옴
+const Home = () => {
+  const { spends } = useContext(SpendsContext);
   const initialMonth = localStorage.getItem("selectedMonth");
-  // 선택된 월 상태와 해당 상태를 변경하는 함수를 설정
   const [selectedMonth, setSelectedMonth] = useState(
     initialMonth ? parseInt(initialMonth, 10) : 1
   );
@@ -32,7 +32,7 @@ const Home = ({ spends, setSpends }) => {
     <>
       <GlobalStyles />
       <InStBox>
-        <RecordForm spends={spends} setSpends={setSpends} />
+        <RecordForm spends={spends} />
       </InStBox>
       <InStBox>
         <Months
@@ -43,7 +43,7 @@ const Home = ({ spends, setSpends }) => {
       </InStBox>
       <InStBox>
         {/* filteredSpends를 미리 생성하여 List 컴포넌트로 전달 */}
-        <List filteredSpends={filterSpendsByMonth(spends, selectedMonth)} />
+        <List filteredSpends={filterSpendsByMonth(spends, selectedMonth)}/>
       </InStBox>
     </>
   );

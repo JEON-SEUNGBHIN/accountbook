@@ -1,8 +1,10 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { SpendsContext } from "../context/SpendsContext";
 
-const Detail = ({ spends, onDelete, onEdit }) => {
+const Detail = () => {
+  const { spends, deleteSpend, editSpend } = useContext(SpendsContext);
   // URL에서 id 매개변수를 가져옴
   const { id } = useParams();
 
@@ -32,7 +34,7 @@ const Detail = ({ spends, onDelete, onEdit }) => {
   const handleDelete = () => {
     const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
     if (isConfirmed) {
-      onDelete(spend.id);
+      deleteSpend(spend.id);
       navigate("/");
     }
   };
@@ -49,7 +51,7 @@ const Detail = ({ spends, onDelete, onEdit }) => {
     };
     const isConfirmed = window.confirm("정말로 수정하시겠습니까?");
     if (isConfirmed) {
-      onEdit(updatedSpend);
+      editSpend(updatedSpend); // onEdit 대신에 editSpend 사용
       navigate("/");
     }
   };
