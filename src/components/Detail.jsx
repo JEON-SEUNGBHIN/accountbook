@@ -1,27 +1,28 @@
-import React, { useRef, useEffect, useContext } from "react";
+import React, { useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { SpendsContext } from "../context/SpendsContext";
+import { deleteSpend, editSpend } from "../redux/modules/action";
 
 const Detail = () => {
-  // SpendsContext에서 지출 데이터 및 관련 함수를 가져옴
-  const { spends, deleteSpend, editSpend } = useContext(SpendsContext);
   // URL에서 id 매개변수를 가져옴
   const { id } = useParams();
 
   // 페이지 이동을 위한 navigate 함수를 가져옴
   const navigate = useNavigate();
 
-  // id에 해당하는 지출 항목을 찾음
-  const spend = spends.find((s) => s.id === id);
+  // Redux의 상태를 가져옴
+  const spends = useSelector((state) => state.spends.spends);
+  const spend = spends.find((s) => s.id.toString() === id);
 
-  // 입력된 값을 참조하기 위한 useRef 훅을 사용
+  // useDispatch 훅을 사용하여 액션을 디스패치
+  const dispatch = useDispatch();
   const dateRef = useRef(null);
   const categoryRef = useRef(null);
   const amountRef = useRef(null);
   const contentRef = useRef(null);
-
-  // 지출 항목이 변경될 때마다 해당 항목의 값을 입력란에 채움
+  
+// 지출 항목이 변경될 때마다 해당 항목의 값을 입력란에 채움
   useEffect(() => {
     if (spend) {
       dateRef.current.value = spend.date;
@@ -35,7 +36,7 @@ const Detail = () => {
   const handleDelete = () => {
     const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
     if (isConfirmed) {
-      deleteSpend(spend.id);
+      dispatch(deleteSpend(spend.id)); // deleteSpend 액션 디스패치
       navigate("/");
     }
   };
@@ -52,10 +53,14 @@ const Detail = () => {
     };
     const isConfirmed = window.confirm("정말로 수정하시겠습니까?");
     if (isConfirmed) {
-      editSpend(updatedSpend); // onEdit 대신에 editSpend 사용
+      dispatch(editSpend(updatedSpend)); // editSpend 액션 디스패치
       navigate("/");
     }
   };
+
+  if (!spend) {
+    return <div>해당 항목을 찾을 수 없습니다.</div>;
+  }
 
   return (
     // 수정 폼을 랜더링

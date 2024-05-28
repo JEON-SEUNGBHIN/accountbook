@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import RecordForm from "./RecordForm";
 import Months from "./Months";
 import List from "./List";
-import { SpendsContext } from "../context/SpendsContext";
-
-// const[spends, setSpends] => spends: 상태값, setSpends: 해당 상태 값을 변경하는 함수
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
-  const { spends } = useContext(SpendsContext);
+  // useSelector로 Redux 상태 값인 spends를 가져올 때, state.spends.spends를 사용해야 합니다.
+  const spends = useSelector((state) => state.spends.spends);
+  const dispatch = useDispatch();
   const initialMonth = localStorage.getItem("selectedMonth");
   const [selectedMonth, setSelectedMonth] = useState(
-    initialMonth ? parseInt(initialMonth, 10) : 1
+    initialMonth ? parseInt(initialMonth, 10) : new Date().getMonth() + 1
   );
 
   // 선택된 월이 변경될 때마다 로컬 스토리지에 반영
@@ -22,6 +22,9 @@ const Home = () => {
 
   // 선택된 월에 해당하는 지출을 필터링하는 함수
   const filterSpendsByMonth = (spends, month) => {
+    if (!spends) {
+      return [];
+    }
     return spends.filter((spend) => {
       const spendMonth = new Date(spend.date).getMonth() + 1;
       return spendMonth === parseInt(month);
@@ -32,7 +35,7 @@ const Home = () => {
     <>
       <GlobalStyles />
       <InStyledBox>
-        <RecordForm spends={spends} />
+        <RecordForm />
       </InStyledBox>
       <InStyledBox>
         <Months
@@ -42,7 +45,7 @@ const Home = () => {
         />
       </InStyledBox>
       <InStyledBox>
-        <List filteredSpends={filterSpendsByMonth(spends, selectedMonth)}/>
+        <List filteredSpends={filterSpendsByMonth(spends, selectedMonth)} />
       </InStyledBox>
     </>
   );

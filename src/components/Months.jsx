@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-// 월 선택 컴포넌트
 const Months = ({ spends, setSelectedMonth, selectedMonth }) => {
   // 월 클릭 이벤트를 처리하는 함수
   const handleMonthClick = (month) => {
@@ -15,8 +14,8 @@ const Months = ({ spends, setSelectedMonth, selectedMonth }) => {
         <MonthBox
           key={month}
           onClick={() => handleMonthClick(month)}
-          // 해당 월에 지출이 있는지 여부에 따라 활성화 여부를 결정
-          isActive={spends.some(
+          // spends가 정의되었는지 확인하고, 정의되어 있다면 some 함수를 호출
+          isActive={spends && spends.some(
             (spend) => new Date(spend.date).getMonth() === month - 1
           )}
           // 선택된 월인지 여부에 따라 스타일을 변경
