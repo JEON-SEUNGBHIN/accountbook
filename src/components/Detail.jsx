@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const Detail = ({ spends, setSpends }) => {
+const Detail = ({ spends, onDelete, onEdit }) => {
   // URL에서 id 매개변수를 가져옴
   const { id } = useParams();
 
@@ -28,53 +28,29 @@ const Detail = ({ spends, setSpends }) => {
     }
   }, [spend]);
 
-  // 지출 항목을 삭제하는 함수
-  const deleteSpend = (id) => {
-    const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
-    if (isConfirmed) {
-      // 삭제된 지출 항목을 제외한 새로운 배열을 생성
-      const updatedSpends = spends.filter((spend) => spend.id !== id);
-      // 삭제된 항목을 제외한 새로운 배열을 상태에 반영하고, setSpends가 아니라 updatedSpends를 반환
-      setSpends(updatedSpends);
-      // 메인 페이지로 이동
-      navigate("/");
-      // 삭제 완료 메시지를 표시
-      alert("삭제되었습니다!");
-      // 함수 완료 후, 새로운 배열을 반환
-      return updatedSpends;
-    } else {
-      // 이전 페이지로 돌아감
-      navigate(-1);
-    }
+  // 삭제하는 함수
+  const handleDelete = () => {
+    onDelete(spend.id);
+    navigate("/");
   };
 
-  // 지출 항목을 수정하는 함수
-  const editSpend = (e) => {
+  // 수정하는 함수
+  const handleEdit = (e) => {
     e.preventDefault();
-    // 수정된 지출 항목을 반영한 새로운 배열을 생성
-    const updatedSpends = spends.map((s) =>
-      s.id === spend.id
-        ? {
-            ...s,
-            date: dateRef.current.value,
-            category: categoryRef.current.value,
-            amount: parseFloat(amountRef.current.value),
-            content: contentRef.current.value,
-          }
-        : s
-    );
-    // 새로운 배열을 상태에 반영
-    setSpends(updatedSpends);
-    // 메인 페이지로 이동
+    const updatedSpend = {
+      ...spend,
+      date: dateRef.current.value,
+      category: categoryRef.current.value,
+      amount: parseFloat(amountRef.current.value),
+      content: contentRef.current.value,
+    };
+    onEdit(updatedSpend);
     navigate("/");
-    alert("수정이 완료되었습니다!!!")
-    // 함수 완료 후, 새로운 배열을 반환
-    return updatedSpends;
   };
 
   return (
     // 수정 폼을 랜더링
-    <UpdateFormStyle onSubmit={editSpend}>
+    <UpdateFormStyle onSubmit={handleEdit}>
       날짜
       <UpdateInputStyle type="date" ref={dateRef} />
       항목
@@ -85,10 +61,7 @@ const Detail = ({ spends, setSpends }) => {
       <UpdateInputStyle type="text" ref={contentRef} />
       <ButtonContainer>
         <UpdateBtnStyle type="submit">수정</UpdateBtnStyle>
-        <UpdateBtnStyleDelete
-          type="button"
-          onClick={() => deleteSpend(spend.id)}
-        >
+        <UpdateBtnStyleDelete type="button" onClick={handleDelete}>
           삭제
         </UpdateBtnStyleDelete>
         <UpdateBtnStyleBack type="button" onClick={() => navigate(-1)}>

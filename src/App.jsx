@@ -10,20 +10,53 @@ function App() {
   // 지출 데이터와 해당 데이터를 업데이트하는 함수를 상태로 관리
   const [spends, setSpends] = useState(fakeData);
 
+  const deleteSpend = (id) => {
+    const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
+    if (isConfirmed) {
+      const updatedSpends = spends.filter((spend) => spend.id !== id);
+      setSpends(updatedSpends);
+      alert("삭제되었습니다!");
+      return updatedSpends;
+    }
+  };
+
+  const editSpend = (updatedSpend) => {
+    const updatedSpends = spends.map((s) =>
+      s.id === updatedSpend.id ? updatedSpend : s
+    );
+    setSpends(updatedSpends);
+    alert("수정이 완료되었습니다!!!");
+    return updatedSpends;
+  };
+
   return (
     <>
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             // Home 컴포넌트를 렌더링하고 spends와 setSpends props를 전달
-            element={<Home spends={spends} setSpends={setSpends} />} 
+            element={
+              <Home
+                spends={spends}
+                setSpends={setSpends}
+                onDelete={deleteSpend}
+                onEdit={editSpend}
+              />
+            }
           />
           <Route
             path="/update/:id"
             // Detail 컴포넌트를 렌더링하고 spends와 setSpends props를 전달
-            element={<Detail spends={spends}  setSpends={setSpends} />} 
+            element={
+              <Detail
+                spends={spends}
+                setSpends={setSpends}
+                onDelete={deleteSpend}
+                onEdit={editSpend}
+              />
+            }
           />
         </Routes>
       </BrowserRouter>

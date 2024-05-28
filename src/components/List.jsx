@@ -2,33 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-// 지출 목록을 표시하는 컴포넌트.
-const List = ({ filteredSpends, onUpdate }) => {
-  // filteredSpends가 undefined일 경우를 대비하여 빈 배열로 초기화
+// 지출 목록을 표시하는 컴포넌트
+const List = ({ filteredSpends }) => {
+  // filteredSpends가 변경될 때마다 spends 상태 업데이트
   const [spends, setSpends] = useState(filteredSpends || []);
 
-  // 1. 상위 컴포넌트에서 filteredSpends prop이 정상적으로 전달되는지 확인
-  console.log("filteredSpends:", filteredSpends);
-
   useEffect(() => {
-    // 2. filteredSpends prop이 변경될 때마다 실행되는지 확인
-    console.log("useEffect runs with filteredSpends:", filteredSpends);
-
-    // filteredSpends가 변경될 때마다 spends 상태 업데이트
     setSpends(filteredSpends || []);
   }, [filteredSpends]);
-
-  // 3. spends 상태가 업데이트되는지 확인
-  console.log("spends:", spends);
-
-  // 수정된 값을 받아 화면을 업데이트하는 함수
-  const handleUpdate = (updatedSpend) => {
-    const updatedList = spends.map((spend) =>
-      spend.id === updatedSpend.id ? updatedSpend : spend
-    );
-    setSpends(updatedList);
-    onUpdate(updatedSpend); // onUpdate 콜백 함수 호출
-  };
 
   return (
     <HistoryContainer>
@@ -37,11 +18,7 @@ const List = ({ filteredSpends, onUpdate }) => {
         <HistoryUl>
           {/* 각 지출 항목을 링크로 표시 */}
           {spends.map((spend) => (
-            <StyledLink
-              key={spend.id}
-              to={`/update/${spend.id}`}
-              onClick={() => handleUpdate(spend)} // 수정된 값을 받아 업데이트하는 함수 호출
-            >
+            <StyledLink key={spend.id} to={`/update/${spend.id}`}>
               <HistoryLi>
                 <LeftDiv>
                   <div style={{ color: "#aeaeae" }}>{spend.date}</div>
