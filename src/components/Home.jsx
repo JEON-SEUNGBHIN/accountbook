@@ -7,7 +7,6 @@ import List from "./List";
 import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
-  // useSelector로 Redux 상태 값인 spends를 가져올 때, state.spends.spends를 사용해야 합니다.
   const spends = useSelector((state) => state.spends.spends);
   const dispatch = useDispatch();
   const initialMonth = localStorage.getItem("selectedMonth");
